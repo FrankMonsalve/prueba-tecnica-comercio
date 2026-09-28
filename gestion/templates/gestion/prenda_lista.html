@@ -1,0 +1,52 @@
+{% extends "gestion/base.html" %}
+
+{% block titulo %}Prendas{% endblock %}
+
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>Prendas para alquiler</h1>
+  <a href="{% url 'prenda_crear' %}" class="btn btn-primary">Nueva prenda</a>
+</div>
+
+<!-- Filtros por estado -->
+<p>
+  <a href="{% url 'prenda_lista' %}" class="btn btn-sm btn-outline-secondary">Todas</a>
+  <a href="?estado=disponible" class="btn btn-sm btn-outline-secondary">Disponibles</a>
+  <a href="?estado=alquilada" class="btn btn-sm btn-outline-secondary">Alquiladas</a>
+  <a href="?estado=mantenimiento" class="btn btn-sm btn-outline-secondary">En mantenimiento</a>
+</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Tipo</th>
+      <th>Talla</th>
+      <th>Color</th>
+      <th>Precio de alquiler</th>
+      <th>Estado</th>
+      <th>Disponible desde</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for prenda in object_list %}
+    <tr>
+      <td>{{ prenda.codigo }}</td>
+      <td>{{ prenda.tipo }}</td>
+      <td>{{ prenda.talla }}</td>
+      <td>{{ prenda.color }}</td>
+      <td>{{ prenda.precio_alquiler }}</td>
+      <td>{{ prenda.get_estado_display }}</td>
+      <td>{{ prenda.fecha_disponibilidad|default:"-" }}</td>
+      <td>
+        <a href="{% url 'prenda_editar' prenda.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
+        <a href="{% url 'prenda_eliminar' prenda.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="8">No hay prendas registradas.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

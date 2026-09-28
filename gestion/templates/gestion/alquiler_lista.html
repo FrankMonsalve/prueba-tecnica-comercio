@@ -1,0 +1,58 @@
+{% extends "gestion/base.html" %}
+
+{% block titulo %}Alquileres{% endblock %}
+
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>Alquileres</h1>
+  <a href="{% url 'alquiler_crear' %}" class="btn btn-primary">Nuevo alquiler</a>
+</div>
+
+<!-- Filtros por estado -->
+<p>
+  <a href="{% url 'alquiler_lista' %}" class="btn btn-sm btn-outline-secondary">Todos</a>
+  <a href="?estado=activo" class="btn btn-sm btn-outline-secondary">Activos</a>
+  <a href="?estado=devuelto" class="btn btn-sm btn-outline-secondary">Devueltos</a>
+  <a href="?estado=cancelado" class="btn btn-sm btn-outline-secondary">Cancelados</a>
+</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Cliente</th>
+      <th>Prendas</th>
+      <th>Fecha alquiler</th>
+      <th>Entrega</th>
+      <th>Devolución prevista</th>
+      <th>Valor</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for alquiler in object_list %}
+    <tr>
+      <td>{{ alquiler.pk }}</td>
+      <td>{{ alquiler.cliente }}</td>
+      <td>
+        {% for prenda in alquiler.prendas.all %}
+          {{ prenda.codigo }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </td>
+      <td>{{ alquiler.fecha_alquiler }}</td>
+      <td>{{ alquiler.fecha_entrega }}</td>
+      <td>{{ alquiler.fecha_devolucion_prevista }}</td>
+      <td>{{ alquiler.valor }}</td>
+      <td>{{ alquiler.get_estado_display }}</td>
+      <td>
+        <a href="{% url 'alquiler_editar' alquiler.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
+        <a href="{% url 'alquiler_eliminar' alquiler.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="9">No hay alquileres registrados.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

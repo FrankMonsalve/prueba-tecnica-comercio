@@ -1,0 +1,15 @@
+{% extends "gestion/base.html" %}
+
+{% block titulo %}Confirmar borrado{% endblock %}
+
+{% block contenido %}
+<h1>Confirmar borrado</h1>
+
+<p>¿Está seguro de que desea eliminar «{{ object }}»?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+  <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

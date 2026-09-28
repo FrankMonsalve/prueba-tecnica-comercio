@@ -1,0 +1,29 @@
+{% extends "gestion/base.html" %}
+
+{% block titulo %}Formulario{% endblock %}
+
+{% block contenido %}
+<h1>{{ titulo|default:"Formulario" }}</h1>
+
+<form method="post" class="col-md-6">
+  {% csrf_token %}
+
+  <!-- Errores del formulario (incluye el solapamiento de prendas) -->
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+  {% endif %}
+
+  {% for campo in form %}
+    <div class="mb-3">
+      {{ campo.label_tag }}
+      {{ campo }}
+      {% for error in campo.errors %}
+        <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
